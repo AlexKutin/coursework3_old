@@ -1,5 +1,7 @@
 package pro.sky.kutin.coursework3.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Socks {
+    @JsonProperty("Color")
     private SOCKS_COLOR color;
+    @JsonProperty("Size")
     private SOCKS_SIZE size;
     private int composition;
 

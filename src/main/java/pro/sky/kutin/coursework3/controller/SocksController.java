@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import pro.sky.kutin.coursework3.model.SOCKS_SIZE;
 import pro.sky.kutin.coursework3.services.SocksService;
 
 @RestController("/api")
+@Tag(name = "Склад интернет-магазина носков", description = "CRUD-операции и другие эндпоинты для автоматизации учета товаров")
 public class SocksController {
     private final SocksService socksService;
 
@@ -34,12 +36,12 @@ public class SocksController {
             )
     )
     @PostMapping("/socks")
-    public ResponseEntity<Void> registerSocksToWarehouse(@RequestBody SocksDTO socksDTO) {
+    public ResponseEntity<Void> acceptSocksToWarehouse(@RequestBody SocksDTO socksDTO) {
         int quantity = socksDTO.getQuantity();
         if (quantity <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        if (socksService.registerSocks(socksDTO)) {
+        if (socksService.acceptSocks(socksDTO)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -74,6 +76,10 @@ public class SocksController {
 
     // ### **GET /api/socks**
     // Возвращает общее количество носков на складе, соответствующих переданным в параметрах критериям запроса
+    @Operation(
+            summary = "Получение количества носков на склада",
+            description = "Возвращает общее количество носков на складе, соответствующих критериям запроса"
+    )
     @Parameter(name = "color", description = "Цвет носков", schema = @Schema(implementation = SOCKS_COLOR.class), required = false)
     @Parameter(name = "size", description = "Размер", schema = @Schema(implementation = SOCKS_SIZE.class), required = false)
     @Parameter(name = "cottonMin", description = "минимальное значение хлопка в товаре", required = false)
@@ -116,7 +122,7 @@ public class SocksController {
         if (quantity <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        if (socksService.releaseSocks(socksDTO)) {
+        if (socksService.writeOffSocks(socksDTO)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

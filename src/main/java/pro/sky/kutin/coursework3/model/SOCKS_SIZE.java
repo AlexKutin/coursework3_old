@@ -23,7 +23,7 @@ public enum SOCKS_SIZE {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static SOCKS_SIZE fromText(String text) {
         for (SOCKS_SIZE r : SOCKS_SIZE.values()) {
-            if (r.getSize().equals(text)) {
+            if (r.getSize().equals(text) || r.name().equals(text)) {
                 return r;
             }
         }
